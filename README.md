@@ -10,14 +10,16 @@ In order to fix that I've been cropping the DVRs in handbrake first, before supe
 
 This script handle both these operations automatically and in batch
 
+I've also added an option to combine multiple files into one for segmented recordings
+
 ## How to use
 I have included most dependencies to work right out of the box on Windows.
 
 All you need to get on your own is FFmpeg; you can get it [there](https://www.gyan.dev/ffmpeg/builds/) by simply running 'winget install ffmpeg' in your windows powershell
 
-Then clone this repo on your computer, place your files in input_videos, and run cropperview.py --I have also made a little batch file, just double click run_cropperview.bat
+Then clone this repo on your computer, place your files in input_videos, and run cropperview.py --I have also made a little batch file, just double click RUN_cropperview.bat
 
-A command window will appear and after completed your processed files will appear in output_files
+A command window will appear, prompt you whether you want to combine all files or not and after completed your processed files will appear in output_files
 
 ## Dependencies / Attribution
  * [FFmpeg](https://github.com/FFmpeg/FFmpeg)
