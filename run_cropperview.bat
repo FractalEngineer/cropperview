@@ -1,0 +1,2 @@
+python "cropperview.py"
+pause
