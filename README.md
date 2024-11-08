@@ -19,7 +19,7 @@ Then clone this repo on your computer, place your files in input_videos, and run
 
 A command window will appear and after completed your processed files will appear in output_files
 
-## Dependancies / Attribution
+## Dependencies / Attribution
  * [FFmpeg](https://github.com/FFmpeg/FFmpeg)
  * [Handbrake](https://github.com/HandBrake/HandBrake)
  * [Niek's Superview](https://github.com/Niek/superview)
