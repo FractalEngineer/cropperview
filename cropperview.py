@@ -16,13 +16,16 @@ handbrake_cmd = os.path.join(root_dir, 'HandBrakeCLI.exe')
 superview_cmd = os.path.join(root_dir, 'superview-cli-windows-amd64-v0.10.exe')
 ffmpeg_concat_list = os.path.join(root_dir, 'concat_list.txt')
 
-def process_video(input_file, output_base_name):
+def process_video(input_file, output_base_name, use_gpu=False):
     """Process a single video file through Handbrake and Superview"""
     cropped_output = os.path.join(output_dir, output_base_name + '_cropped.mp4')
     
     # Run Handbrake to crop the video (144 pixels left, 148 right)
     print(f"Running Handbrake to crop the video: {input_file}")
-    subprocess.run([handbrake_cmd, '-i', input_file, '-o', cropped_output, '--crop', '0:0:144:148'], shell=True)
+    handbrake_args = [handbrake_cmd, '-i', input_file, '-o', cropped_output, '--crop', '0:0:144:148']
+    if use_gpu:
+        handbrake_args.extend(['--hwdecode', 'cuda', '--hwaccel', 'cuda'])
+    subprocess.run(handbrake_args, shell=True)
 
     # Run Superview to process the cropped video
     print(f"Running Superview to process the cropped video: {cropped_output}")
@@ -55,10 +58,13 @@ def main():
     # Check if we should combine videos (passed as command line argument)
     should_combine = len(sys.argv) > 1 and sys.argv[1].lower() == 'combine'
     
+    # Check if we should use GPU acceleration (passed as command line argument)
+    use_gpu = len(sys.argv) > 2 and sys.argv[2].lower() == 'gpu'
+    
     if should_combine:
         # Combine all videos and process the combined file
         combined_file = combine_videos()
-        process_video(combined_file, 'combined')
+        process_video(combined_file, 'combined', use_gpu=use_gpu)
         # Clean up the combined input file
         os.remove(combined_file)
     else:
@@ -68,7 +74,7 @@ def main():
                 print(f"Processing file: {filename}")
                 input_file = os.path.join(input_dir, filename)
                 output_base_name = os.path.splitext(filename)[0]
-                process_video(input_file, output_base_name)
+                process_video(input_file, output_base_name, use_gpu=use_gpu)
                 print(f"Processed: {filename}")
 
 if __name__ == "__main__":
